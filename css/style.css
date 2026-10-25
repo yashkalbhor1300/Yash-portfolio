@@ -1753,3 +1753,13 @@ a {
     }
 
 }
+/* Portfolio refresh: six featured projects */
+.project-card { min-height: 355px; }
+.project-card h3 { overflow-wrap: anywhere; }
+.project-category { max-width: 65%; }
+.project-tags { margin-bottom: 6px; }
+@media (max-width: 700px) {
+    .project-card { min-height: auto; }
+    .project-header { margin-bottom: 30px; }
+    .project-card > p { min-height: auto; }
+}

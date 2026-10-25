@@ -1,225 +1,40 @@
-/* =========================================================
-   YASH KALBHOR PORTFOLIO
-   DARK PROFESSIONAL THEME
-========================================================= */
-
-
-console.log(
-    "Yash Kalbhor Portfolio Loaded"
-);
-
-
-/* =========================================================
-   GET ELEMENTS
-========================================================= */
-
-const sections =
-    document.querySelectorAll("section");
-
-
-const navLinks =
-    document.querySelectorAll(
-        ".nav-menu a"
-    );
-
-
-const navbar =
-    document.querySelector(".navbar");
-
-
-/* =========================================================
-   ACTIVE NAVIGATION
-========================================================= */
-
+/* Yash Kalbhor Portfolio — navigation and interaction */
+console.log("Yash Kalbhor Portfolio Loaded");
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll(".nav-menu a");
+const navbar = document.querySelector(".navbar");
 function updateActiveNavigation() {
-
     let currentSection = "";
-
-
-    sections.forEach((section) => {
-
-        const sectionTop =
-            section.offsetTop - 180;
-
-
-        const sectionHeight =
-            section.offsetHeight;
-
-
-        if (
-            window.scrollY >= sectionTop &&
-            window.scrollY <
-            sectionTop + sectionHeight
-        ) {
-
-            currentSection =
-                section.getAttribute("id");
-
+    sections.forEach(section => {
+        const top = section.offsetTop - 180;
+        if (window.scrollY >= top && window.scrollY < top + section.offsetHeight) {
+            currentSection = section.getAttribute("id") || "";
         }
-
     });
-
-
-    navLinks.forEach((link) => {
-
-        link.classList.remove("active");
-
-
-        if (
-            link.getAttribute("href") ===
-            "#" + currentSection
-        ) {
-
-            link.classList.add("active");
-
-        }
-
+    navLinks.forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + currentSection);
     });
-
 }
-
-
-window.addEventListener(
-    "scroll",
-    updateActiveNavigation
-);
-
-
-updateActiveNavigation();
-
-
-/* =========================================================
-   NAVBAR SHADOW
-========================================================= */
-
 function updateNavbar() {
-
-    if (window.scrollY > 20) {
-
-        navbar.style.boxShadow =
-            "0 8px 30px rgba(0, 0, 0, 0.25)";
-
-    } else {
-
-        navbar.style.boxShadow =
-            "none";
-
-    }
-
+    if (navbar) navbar.style.boxShadow = window.scrollY > 20 ? "0 8px 30px rgba(0, 0, 0, 0.25)" : "none";
 }
-
-
-window.addEventListener(
-    "scroll",
-    updateNavbar
-);
-
-
+window.addEventListener("scroll", updateActiveNavigation, { passive: true });
+window.addEventListener("scroll", updateNavbar, { passive: true });
+updateActiveNavigation();
 updateNavbar();
-
-
-/* =========================================================
-   SMOOTH SCROLL
-========================================================= */
-
-const internalLinks =
-    document.querySelectorAll(
-        'a[href^="#"]'
-    );
-
-
-internalLinks.forEach((link) => {
-
-    link.addEventListener(
-        "click",
-        function (event) {
-
-            const targetId =
-                this.getAttribute("href");
-
-
-            if (
-                targetId === "#" ||
-                !targetId
-            ) {
-                return;
-            }
-
-
-            const target =
-                document.querySelector(
-                    targetId
-                );
-
-
-            if (target) {
-
-                event.preventDefault();
-
-
-                const navbarHeight =
-                    navbar.offsetHeight;
-
-
-                const targetPosition =
-                    target.offsetTop -
-                    navbarHeight;
-
-
-                window.scrollTo({
-
-                    top:
-                        targetPosition,
-
-                    behavior:
-                        "smooth"
-
-                });
-
-            }
-
-        }
-    );
-
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", event => {
+        const targetId = link.getAttribute("href");
+        if (!targetId || targetId === "#") return;
+        const target = document.getElementById(targetId.slice(1));
+        if (!target) return;
+        event.preventDefault();
+        window.scrollTo({ top: target.offsetTop - (navbar ? navbar.offsetHeight : 0), behavior: "smooth" });
+    });
 });
-
-
-/* =========================================================
-   PROJECT CARD INTERACTION
-========================================================= */
-
-const projectCards =
-    document.querySelectorAll(
-        ".project-card"
-    );
-
-
-projectCards.forEach((card) => {
-
-    card.addEventListener(
-        "mouseenter",
-        () => {
-
-            card.style.transition =
-                "transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease";
-
-        }
-    );
-
+document.querySelectorAll(".project-card").forEach(card => {
+    card.addEventListener("mouseenter", () => {
+        card.style.transition = "transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease";
+    });
 });
-
-
-/* =========================================================
-   PAGE LOAD
-========================================================= */
-
-window.addEventListener(
-    "load",
-    () => {
-
-        document.body.classList.add(
-            "page-loaded"
-        );
-
-    }
-);
+window.addEventListener("load", () => document.body.classList.add("page-loaded"));
